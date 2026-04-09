@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Poetry
+poetry.lock  # optionnel, vous pouvez le garder si vous voulez figer les versions
+
+# Données (trop volumineuses ou sensibles)
+data/raw/
+data/processed/
+data/synthetic/
+reports/
+*.csv
+*.pkl
+*.joblib
+
+# Modèles sauvegardés (sauf si petits)
+#models_saved/*.pkl
+models_saved/*.joblib
+
+# Fichiers de configuration personnels
+.env
+.vscode/
+.idea/
+
+# Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Logs
+logs/
+*.log
+
+# Fichiers système
+.DS_Store
+Thumbs.db
