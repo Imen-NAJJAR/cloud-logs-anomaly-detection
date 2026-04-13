@@ -81,7 +81,7 @@ def generate_synthetic_cloudtrail_data(num_accounts=100, days=30, events_per_day
         # Définir le type de compte (normal, suspect, compromis)
         if i < 70:  # 70% de comptes normaux
             account_type = 'normal'
-            anomaly_prob = 0.05  # 5% d'anomalies
+            anomaly_prob = 0.001  # 0.1% d'anomalies
         elif i < 90:  # 20% de comptes suspects
             account_type = 'suspicious'
             anomaly_prob = 0.30  # 30% d'anomalies

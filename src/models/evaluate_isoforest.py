@@ -119,20 +119,27 @@ def evaluate_service(service, raw_data_path, processed_data_path, iso_model_dir,
     model = joblib.load(os.path.join(iso_model_dir, f"{service}_isoforest.pkl"))
     
     # 4. Prédire
-    preds = model.predict(X_scaled)
-    scores = model.decision_function(X_scaled)
-    
+    anomaly_scores = model.decision_function(X_scaled)   # plus négatif = plus anormal
+
+    # Seuil personnalisé (ex: 10e percentile)
+    custom_threshold = np.percentile(anomaly_scores, 10)
+    y_pred_binary = (anomaly_scores <= custom_threshold).astype(int)   # 1 = compromis
+
+    # Score pour l'AUC (plus grand = plus anormal)
+    y_score_auc = -anomaly_scores
+
     # 5. Joindre avec ground truth
     eval_df = processed_df[['account_id']].copy()
-    eval_df['predicted'] = (preds == -1).astype(int)
-    eval_df['anomaly_score'] = scores
+    eval_df['predicted'] = y_pred_binary          # 1 = compromis, 0 = normal
+    eval_df['anomaly_score_raw'] = anomaly_scores
+    eval_df['anomaly_score_auc'] = y_score_auc    # score positif pour AUC
     eval_df = eval_df.merge(truth_df, on='account_id', how='left')
-    
+
     # 6. Évaluation
     y_true = eval_df['ground_truth']
-    y_pred = eval_df['predicted']
-    y_score = -eval_df['anomaly_score']  # plus le score est négatif, plus c'est anormal
-    
+    y_pred = eval_df['predicted']                 # maintenant correct
+    y_score = eval_df['anomaly_score_auc']        # score positif pour AUC
+
     print("\n--- Rapport de classification ---")
     print(classification_report(y_true, y_pred))
     print("\n--- Matrice de confusion ---")

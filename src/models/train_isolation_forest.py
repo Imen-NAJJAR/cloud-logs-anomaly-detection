@@ -6,7 +6,7 @@ from sklearn.ensemble import IsolationForest
 import warnings
 warnings.filterwarnings('ignore')
 
-def train_isolation_forest(service, data_path, model_dir, contamination=0.1, random_state=42):
+def train_isolation_forest(service, data_path, model_dir, contamination=0.05, random_state=42):
     print(f"\n{'='*60}")
     print(f"Entraînement Isolation Forest pour : {service.upper()}")
     print(f"{'='*60}")
@@ -52,4 +52,4 @@ if __name__ == "__main__":
         if not os.path.exists(data_file):
             print(f"⚠️ Fichier non trouvé : {data_file}")
             continue
-        train_isolation_forest(service, data_file, models_dir, contamination=0.1)
+        train_isolation_forest(service, data_file, models_dir, contamination=0.05)
